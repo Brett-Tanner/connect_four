@@ -75,7 +75,51 @@ describe "Game" do
   end
   
   describe "#valid_move?" do
-    
+    context "when coordinates are out of bounds" do
+      let(:row) {4}
+      let(:col) {-1}
+
+      it "displays a helpful error" do
+        error = "**Coordinates must be between 1 and 4**"
+        expect(game).to receive(:puts).with(error).once
+        game.valid_move?(row, col)
+      end
+
+      it "returns false" do
+        valid = game.valid_move?(row, col)
+        expect(valid).to be false
+      end
+    end
+
+    context "when space is occupied" do
+      let(:row) {3}
+      let(:col) {3}
+      
+      before do
+        allow(game).to receive(:return_board).and_return(Array.new(4) {Array.new(4, " ⚪ ")})
+      end
+
+      it "displays a helpful error" do
+        error = "**That space is occupied!**"
+        expect(game).to receive(:puts).with(error).once
+        game.valid_move?(row, col)
+      end
+
+      it "returns false" do
+        valid = game.valid_move?(row, col)
+        expect(valid).to be false
+      end
+    end
+
+    context "when move is valid" do
+      let(:row) {0}
+      let(:col) {0}
+
+      it "returns true" do
+        valid = game.valid_move?(row, col)
+        expect(valid).to be true
+      end
+    end
   end
 
   describe "#play_turn" do

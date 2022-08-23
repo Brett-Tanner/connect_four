@@ -1,5 +1,7 @@
 class Game
 
+  attr_accessor :board
+
   EMPTY = " ○ "
   WHITE = " ⚪ "
   BLACK = " ⚫ "
@@ -39,7 +41,8 @@ class Game
   end
 
   def valid_move?(row, col)
-    
+    return true if inbounds?(row, col) && unoccupied?(row, col)
+    false
   end
 
   def game_over?
@@ -50,6 +53,22 @@ class Game
 
   def print_board
     @board.each {|row| puts row.join}
+  end
+
+  def return_board()
+    @board
+  end
+
+  def inbounds?(row, col)
+    return true if row >= 0 && row <= 4 && col >= 0 && col <= 4
+    puts "**Coordinates must be between 1 and 4**"
+    false
+  end
+
+  def unoccupied?(row, col)
+    return true if return_board()[row][col] == EMPTY
+    puts "**That space is occupied!**"
+    false
   end
 end
 

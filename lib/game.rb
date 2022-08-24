@@ -27,7 +27,8 @@ class Game
     coordinates = get_coordinates(player)
     row = coordinates[0] - 1
     col = coordinates[1] - 1
-    # update board if unoccupied and in bounds
+    return play_turn(player) unless valid_move?(row, col)
+    @board[row][col] = player
   end
 
   def get_coordinates(player)
@@ -41,8 +42,8 @@ class Game
   end
 
   def valid_move?(row, col)
-    return true if inbounds?(row, col) && unoccupied?(row, col)
-    false
+    return false if !inbounds?(row, col) || !unoccupied?(row, col)
+    true
   end
 
   def game_over?
@@ -60,7 +61,7 @@ class Game
   end
 
   def inbounds?(row, col)
-    return true if row >= 0 && row <= 4 && col >= 0 && col <= 4
+    return true if row >= 0 && row <= 3 && col >= 0 && col <= 3
     puts "**Coordinates must be between 1 and 4**"
     false
   end

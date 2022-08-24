@@ -123,7 +123,42 @@ describe "Game" do
   end
 
   describe "#play_turn" do
-    # you can actually measure changes btw, check the bookmark
+
+    context "when player gives valid coordinates" do
+
+      before do
+        allow(game).to receive(:gets).and_return("1, 1")
+      end
+      
+      it "changes the space at the coordinates" do
+        expect {game.play_turn(" ⚪ ")}.to change {game.board[0][0]}.from(" ○ ").to(" ⚪ ")
+      end
+    end
+
+    context "when player gives invalid coordinates" do
+      before do
+        allow(game).to receive(:gets).and_return("5, 5", "3, 3")
+      end
+      
+      it "doesn't change the space at the coordinates" do
+        expect {game.play_turn(" ⚪ ")}.not_to change {game.board[0][0]}
+      end
+    end
+
+    context "when player gives occupied coordinates" do
+      before do
+        allow(game).to receive(:gets).and_return("1, 1", "2, 2")
+      end
+      
+      it "doesn't change the space at the coordinates" do
+        game.board[0][0] = " ⚪ "
+        expect {game.play_turn(" ⚪ ")}.not_to change {game.board[0][0]}
+      end
+    end
+  end
+
+  describe "#game_over" do
+    
   end
 
   describe "#play_game" do

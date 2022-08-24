@@ -123,19 +123,20 @@ describe "Game" do
   end
 
   describe "#play_turn" do
+    let(:turn_count) {game.turn_count}
 
     context "when player gives valid coordinates" do
 
       before do
-        allow(game).to receive(:gets).and_return("1, 1")
+        allow(game).to receive(:gets).and_return("1, 1", "2, 2")
       end
       
       it "changes the space at the coordinates" do
         expect {game.play_turn(" ⚪ ")}.to change {game.board[0][0]}.from(" ○ ").to(" ⚪ ")
       end
 
-      xit "increases turn count by one" do
-        expect {game.play_turn(" ⚪ ")}.to change {instance_variable_get(:@turn_count)}.by(1)
+      it "increases turn count by one" do
+        expect {game.play_turn(" ⚪ ")}.to change {turn_count}.by(1)
       end
     end
 
@@ -148,8 +149,8 @@ describe "Game" do
         expect {game.play_turn(" ⚪ ")}.not_to change {game.board[0][0]}
       end
 
-      xit "doesn't change turn count" do
-        expect {game.play_turn(" ⚪ ")}.not_to change {instance_variable_get(:@turn_count)}
+      it "doesn't change turn count" do
+        expect {game.play_turn(" ⚪ ")}.not_to change {turn_count}
       end
     end
 
@@ -163,8 +164,8 @@ describe "Game" do
         expect {game.play_turn(" ⚪ ")}.not_to change {game.board[0][0]}
       end
 
-      xit "doesn't change turn count" do
-        expect {game.play_turn(" ⚪ ")}.not_to change {instance_variable_get(:@turn_count)}
+      it "doesn't change turn count" do
+        expect {game.play_turn(" ⚪ ")}.not_to change {turn_count}
       end
     end
   end
@@ -209,13 +210,6 @@ describe "Game" do
         over = game.game_over?
         expect(over).to be false
       end
-    end
-  end
-
-  describe "#play_game" do
-    xit "starts by printing the board" do
-      expect(game).to receive(:print_board).once
-      game.play_game
     end
   end
 end

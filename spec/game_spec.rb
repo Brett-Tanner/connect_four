@@ -133,6 +133,10 @@ describe "Game" do
       it "changes the space at the coordinates" do
         expect {game.play_turn(" ⚪ ")}.to change {game.board[0][0]}.from(" ○ ").to(" ⚪ ")
       end
+
+      xit "increases turn count by one" do
+        expect {game.play_turn(" ⚪ ")}.to change {instance_variable_get(:@turn_count)}.by(1)
+      end
     end
 
     context "when player gives invalid coordinates" do
@@ -142,6 +146,10 @@ describe "Game" do
       
       it "doesn't change the space at the coordinates" do
         expect {game.play_turn(" ⚪ ")}.not_to change {game.board[0][0]}
+      end
+
+      xit "doesn't change turn count" do
+        expect {game.play_turn(" ⚪ ")}.not_to change {instance_variable_get(:@turn_count)}
       end
     end
 
@@ -154,15 +162,58 @@ describe "Game" do
         game.board[0][0] = " ⚪ "
         expect {game.play_turn(" ⚪ ")}.not_to change {game.board[0][0]}
       end
+
+      xit "doesn't change turn count" do
+        expect {game.play_turn(" ⚪ ")}.not_to change {instance_variable_get(:@turn_count)}
+      end
     end
   end
 
   describe "#game_over" do
     
+    context "when a row is full" do
+      before do
+        game.board[0] = [" ⚫ ", " ⚫ ", " ⚫ ", " ⚫ "]
+      end
+
+      it "returns true" do
+        over = game.game_over?
+        expect(over).to be true
+      end
+    end
+
+    context "when a column is full" do
+      before do
+        game.board.each {|row| row[0] = " ⚫ "}
+      end
+
+      it "returns true" do
+        over = game.game_over?
+        expect(over).to be true
+      end
+    end
+
+    context "when a diagonal is full" do
+      before do
+        0..4.times {|i| game.board[i][i] = " ⚫ "}
+      end
+
+      it "returns true" do
+        over = game.game_over?
+        expect(over).to be true
+      end
+    end
+
+    context "when the game isn't over" do
+      it "returns false" do
+        over = game.game_over?
+        expect(over).to be false
+      end
+    end
   end
 
   describe "#play_game" do
-    it "starts by printing the board" do
+    xit "starts by printing the board" do
       expect(game).to receive(:print_board).once
       game.play_game
     end

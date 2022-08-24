@@ -1,6 +1,6 @@
 class Game
 
-  attr_accessor :board
+  attr_accessor :board, :tur
 
   EMPTY = " ○ "
   WHITE = " ⚪ "
@@ -14,12 +14,14 @@ class Game
   def play_game
     print_board()
     puts "#{BLACK} goes first"
-    # loop 
+    winner = loop do
       # play_turn(BLACK)
-      # break if game_over?
+      # break BLACK if game_over?
       # play_turn(WHITE)
-      # break if game_over?
+      # break WHITE if game_over?
+    end 
     # declare winner
+    print_board()
     # ask if they wanna play again
   end
 
@@ -28,6 +30,7 @@ class Game
     row = coordinates[0] - 1
     col = coordinates[1] - 1
     return play_turn(player) unless valid_move?(row, col)
+    @turn_count += 1
     @board[row][col] = player
   end
 
@@ -47,7 +50,8 @@ class Game
   end
 
   def game_over?
-    
+    return true if row_win?() || column_win?() || diagonal_win?()
+    false
   end
 
   private
@@ -70,6 +74,24 @@ class Game
     return true if return_board()[row][col] == EMPTY
     puts "**That space is occupied!**"
     false
+  end
+
+  def row_win?
+    @board.any? {|row| row.all?{|space| space == BLACK || space == WHITE}}
+  end
+
+  def column_win?
+    0..4.times do |i|
+      col = [@board[0][i], @board[1][i], @board[2][i], @board[3][i]]
+      return true if col.all? {|space| space == BLACK || space == WHITE}
+    end
+    false
+  end
+
+  def diagonal_win?
+    r_diagonal = [@board[0][0], @board[1][1], @board[2][2], @board[3][3]]
+    l_diagonal = [@board[0][3], @board[1][2], @board[2][1], @board[3][0]]
+    l_diagonal.all? {|space| space == BLACK || space == WHITE} || r_diagonal.all? {|space| space == BLACK || space == WHITE}
   end
 end
 

@@ -96,7 +96,7 @@ describe "Game" do
       let(:col) {3}
       
       before do
-        allow(game).to receive(:return_board).and_return(Array.new(4) {Array.new(4, " ⚪ ")})
+        allow(game).to receive(:return_board).and_return(Array.new(4) {Array.new(4, "⚪ ")})
       end
 
       it "displays a helpful error" do
@@ -123,7 +123,7 @@ describe "Game" do
   end
 
   describe "#play_turn" do
-    let(:turn_count) {game.turn_count}
+    let(:turn_count) {game.instance_variable_get(:@turn_count)}
 
     context "when player gives valid coordinates" do
 
@@ -132,11 +132,7 @@ describe "Game" do
       end
       
       it "changes the space at the coordinates" do
-        expect {game.play_turn(" ⚪ ")}.to change {game.board[0][0]}.from(" ○ ").to(" ⚪ ")
-      end
-
-      it "increases turn count by one" do
-        expect {game.play_turn(" ⚪ ")}.to change {turn_count}.by(1)
+        expect {game.play_turn("⚪ ")}.to change {game.board[0][0]}.from(" ○ ").to("⚪ ")
       end
     end
 
@@ -146,11 +142,11 @@ describe "Game" do
       end
       
       it "doesn't change the space at the coordinates" do
-        expect {game.play_turn(" ⚪ ")}.not_to change {game.board[0][0]}
+        expect {game.play_turn("⚪ ")}.not_to change {game.board[0][0]}
       end
 
       it "doesn't change turn count" do
-        expect {game.play_turn(" ⚪ ")}.not_to change {turn_count}
+        expect {game.play_turn("⚪ ")}.not_to change {turn_count}
       end
     end
 
@@ -160,12 +156,12 @@ describe "Game" do
       end
       
       it "doesn't change the space at the coordinates" do
-        game.board[0][0] = " ⚪ "
-        expect {game.play_turn(" ⚪ ")}.not_to change {game.board[0][0]}
+        game.board[0][0] = "⚪ "
+        expect {game.play_turn("⚪ ")}.not_to change {game.board[0][0]}
       end
 
       it "doesn't change turn count" do
-        expect {game.play_turn(" ⚪ ")}.not_to change {turn_count}
+        expect {game.play_turn("⚪ ")}.not_to change {turn_count}
       end
     end
   end
@@ -174,7 +170,7 @@ describe "Game" do
     
     context "when a row is full" do
       before do
-        game.board[0] = [" ⚫ ", " ⚫ ", " ⚫ ", " ⚫ "]
+        game.instance_variable_set(:@board, Array.new(4) {Array.new(4, "⚫ ")})
       end
 
       it "returns true" do
@@ -185,7 +181,7 @@ describe "Game" do
 
     context "when a column is full" do
       before do
-        game.board.each {|row| row[0] = " ⚫ "}
+        game.board.each {|row| row[0] = "⚫ "}
       end
 
       it "returns true" do
@@ -196,7 +192,7 @@ describe "Game" do
 
     context "when a diagonal is full" do
       before do
-        0..4.times {|i| game.board[i][i] = " ⚫ "}
+        0..4.times {|i| game.board[i][i] = "⚫ "}
       end
 
       it "returns true" do

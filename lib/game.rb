@@ -80,26 +80,21 @@ class Game
   end
 
   def row_win?
-    @board.each {|row| p row}
     @board.any? {|row| row.all?(BLACK) || row.all?(WHITE)}
   end
 
   def column_win?
     0..4.times do |i|
       col = [@board[0][i], @board[1][i], @board[2][i], @board[3][i]]
-      p col
       return true if col.all?(BLACK) || col.all?(WHITE)
     end
     false
   end
 
-  def diagonal_win? #FIXME: triggers on a single filled space
+  def diagonal_win?
     l_diagonal = [@board[0][3], @board[1][2], @board[2][1], @board[3][0]]
     r_diagonal = [@board[0][0], @board[1][1], @board[2][2], @board[3][3]]
-    p l_diagonal
-    p r_diagonal
-    l_diagonal.all?(BLACK) || l_diagonal.all?(WHITE) || r_diagonal.all? {BLACK} || r_diagonal.all?(WHITE)
-    false
+    l_diagonal.all?(BLACK) || l_diagonal.all?(WHITE) || r_diagonal.all?(BLACK) || r_diagonal.all?(WHITE)
   end
 
   def reset_game

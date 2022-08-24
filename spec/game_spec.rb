@@ -56,7 +56,31 @@ describe "Game" do
       end
 
       it "displays error" do
-        error = "**You entered too many numbers**"
+        error = "**You entered the wrong number of digits!**"
+        expect(game).to receive(:puts).with(error).once
+        game.get_coordinates(player)
+      end
+
+      it "calls self" do
+        expect(game).to receive(:get_coordinates).once
+        game.get_coordinates(player)
+      end
+
+      it "returns the valid coordinates" do
+        valid_coord = [2, 3]
+        return_val = game.get_coordinates(player)
+        expect(return_val).to eql(valid_coord)
+      end
+    end
+
+    context "when input is too short" do
+
+      before do
+        allow(game).to receive(:gets).and_return("3", "2, 3")
+      end
+
+      it "displays error" do
+        error = "**You entered the wrong number of digits!**"
         expect(game).to receive(:puts).with(error).once
         game.get_coordinates(player)
       end

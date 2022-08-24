@@ -40,8 +40,8 @@ class Game
   def get_coordinates(player)
     puts "#{player}, enter coordinates like 'row, col'"
     input = gets.chomp.split(", ")
-    if input.length > 2
-      puts "**You entered too many numbers**"
+    if input.length != 2
+      puts "**You entered the wrong number of digits!**"
       return get_coordinates(player)
     end
     input.map {|char| char.to_i}
